@@ -2,11 +2,6 @@
 
 require __DIR__ . '/autoloader.php';
 
-use App\UserModel\User;
-
-$model = new User();
-$user = json_decode($model->getUser(), true);
-
-echo $user['nom'];
-echo $user['prenom'];
-echo $user['email'];
+use App\User\UserModel;
+use App\Trip\TripModel;
+use App\Agency\AgencyModel;
