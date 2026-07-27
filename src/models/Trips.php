@@ -3,6 +3,7 @@
 namespace App\Trip;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 
 class TripModel{
 
@@ -77,5 +78,31 @@ class TripModel{
 
     public function setArrivalAgencyId(int $arrivalAgencyId): void {
         $this->arrivalAgencyId = $arrivalAgencyId;
+    }
+
+    private function assertDateTime(DateTimeImmutable $departure, 
+    DateTimeImmutable $arrival): void {
+        if($arrival <= $departure){
+            throw new InvalidArgumentException("Arrival must be after departure.");
+        }
+    }
+
+    public function reschedule(DateTimeImmutable $departure, 
+    DateTimeImmutable $arrival): void {
+        $this->assertDateTime($departure, $arrival);
+        $this->departureDateTime = $departure;
+        $this->arrivalDateTime = $arrival;
+    }
+
+    public function assertAgencies(?int $departureAgencyId, ?int $arrivalAgencyId){
+        if($departureAgencyId === $arrivalAgencyId){
+            throw new InvalidArgumentException("Arrival agency must be different from departure agency");
+        }
+    }
+
+    public function assertSpace(?int $space){
+        if($space < 0 ){
+            throw new InvalidArgumentException("The number of available seats cannot be negative");
+        }
     }
 }
