@@ -5,9 +5,12 @@ spl_autoload_register(function ($class){
     $class = str_replace('App\\', '', $class);   
     
     $map = [
+        'Database\\ConnectDatabase' => 'db/connect.php',
         'User\\UserModel' => 'models/User.php',
+        'User\\UserRepository' => 'repositories/usersRepository.php',
         'Trip\\TripModel' => 'models/Trips.php',
-        'Agency\\AgencyModel' => 'models/Agencies.php'
+        'Agency\\AgencyModel' => 'models/Agencies.php',
+        
     ];
 
 
