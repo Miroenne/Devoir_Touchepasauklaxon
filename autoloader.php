@@ -6,6 +6,7 @@ spl_autoload_register(function ($class){
     
     $map = [
         'Database\\ConnectDatabase' => 'db/connect.php',
+        'Error\\ErrorBuilder' => 'utils/error.php',
         'User\\UserModel' => 'models/User.php',
         'User\\UserRepository' => 'repositories/usersRepository.php',
         'User\\UserServices' => 'services/usersServices.php',

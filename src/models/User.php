@@ -3,8 +3,9 @@
 namespace App\User;
 
 use InvalidArgumentException;
+use JsonSerializable;
 
-class UserModel{
+class UserModel implements JsonSerializable {
 
     private readonly ?int $id;
     private string $firstName;
@@ -23,6 +24,17 @@ class UserModel{
         $this->email = $email;
         $this->passwordHash = $passwordHash;
         $this->admin = $admin;
+    }
+
+    public function jsonSerialize(): array{
+        return [
+            'id' => $this->id,
+            'firstName' => $this->firstName,
+            'lastName' => $this->lastName,
+            'email' => $this->email,
+            'phoneNumber' => $this->phoneNumber,
+            'admin' => $this->phoneNumber
+        ];
     }
 
     public function getId(): ?int {

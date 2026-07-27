@@ -12,13 +12,22 @@ use App\Trip\TripModel;
 
 use App\Agency\AgencyModel;
 
-$userRepo = new UserRepository();
+$userService = new UserServices(new UserRepository());
 
-$users = $userRepo->getAllUsers();
+$user = $userService->getUserById(100);
+/*echo 'Variable user depuis index.php : <br>';
+var_dump($user);*/
 
-foreach($users as $user){
-    /*echo '<pre>';
-    var_dump($user);*/
+
+    echo '<pre>';
+    echo $user->getLastName();
+    echo '<pre>';
+    echo $user->getFirstName();
+
+
+ /*foreach($users as $user){
+   echo '<pre>';
+    var_dump($user);
     echo '<pre>';
     
     echo $user->getLastName();
@@ -30,4 +39,4 @@ foreach($users as $user){
     echo $user->getPhoneNumber();
     echo '<pre>';
 
-}
+}*/
