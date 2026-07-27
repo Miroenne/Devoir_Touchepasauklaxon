@@ -16,7 +16,18 @@ class UserRepository{
         $this->pdo = ConnectDatabase::connect();
     }
 
-    
+    private function mapRowToUserListItem(array $row): UserModel{
+        return new UserModel(
+            id: (int)$row['user_Id'],
+            lastName: $row['user_LastName'],
+            firstName: $row['user_FirstName'],
+            email: $row['user_Email'],
+            phoneNumber: $row['user_PhoneNumber'],
+            passwordHash: 'null',
+            admin: (bool)$row['user_Admin']
+        );
+    }
+
     private function mapRowToUser(array $row): UserModel {
         return new UserModel(
             id: (int)$row['user_Id'],
@@ -24,21 +35,53 @@ class UserRepository{
             firstName: $row['user_FirstName'],
             email: $row['user_Email'],
             phoneNumber: $row['user_PhoneNumber'],
-            passwordHash: $row['user_Password'] ?? null,
-            admin: (int)$row['user_Admin'] ?? null
+            passwordHash: $row['user_Password'],
+            admin: (bool)$row['user_Admin']
         );
     } 
+
+    public function getAllUsers(): array {
+        $stmt = $this->pdo->query("SELECT user_Id, user_FirstName, user_LastName, user_Email,
+         user_PhoneNumber, user_Admin FROM users");
+
+        $rows = $stmt->fetchAll();
+
+        if(!$rows){
+            throw new InvalidArgumentException('No user found');
+        }else {
+            foreach($rows as $row){
+                $users [] = $this->mapRowToUserListItem($row);
+            } 
+            return $users;
+        }
+        
+    }
 
     public function getUserById(?int $id): UserModel{
         $stmt = $this->pdo-> prepare("SELECT * FROM users WHERE user_Id = :id");
         $stmt->execute(['id' => $id]);
 
         $row = $stmt->fetch();
-        $user = $this->mapRowToUser($row);
+       
 
-        if(!$user){
+        if(!$row){
             throw new InvalidArgumentException('No user found');
         }else{
+            $user = $this->mapRowToUser($row);
+            return $user;
+        }
+    }
+
+    public function getUserByEmail(string $email): UserModel{
+        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE user_Email = :email");
+        $stmt->execute(['email' => $email]);
+
+        $row = $stmt->fetch();        
+
+        if(!$row){
+            throw new InvalidArgumentException('No user found');
+        }else{
+            $user = $this->mapRowToUser($row);
             return $user;
         }
     }

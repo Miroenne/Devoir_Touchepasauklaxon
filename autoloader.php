@@ -8,6 +8,7 @@ spl_autoload_register(function ($class){
         'Database\\ConnectDatabase' => 'db/connect.php',
         'User\\UserModel' => 'models/User.php',
         'User\\UserRepository' => 'repositories/usersRepository.php',
+        'User\\UserServices' => 'services/usersServices.php',
         'Trip\\TripModel' => 'models/Trips.php',
         'Agency\\AgencyModel' => 'models/Agencies.php',
         

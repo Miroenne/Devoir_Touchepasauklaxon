@@ -2,6 +2,8 @@
 
 namespace App\User;
 
+use InvalidArgumentException;
+
 class UserModel{
 
     private readonly ?int $id;
@@ -12,8 +14,8 @@ class UserModel{
     private string $passwordHash;
     private bool $admin;
     
-    function __construct($id, $firstName, $lastName, 
-    $phoneNumber, $email,$passwordHash, $admin){
+    public function __construct(?int $id,string $firstName,string $lastName, 
+    string $phoneNumber,string $email,string $passwordHash,bool $admin){
         $this->id = $id;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
@@ -43,10 +45,6 @@ class UserModel{
         return $this->email;
     }
 
-    public function getPassword(): string {
-        return $this->passwordHash;
-    }
-
     public function getAdmin(): bool {
         return $this->admin;
     }
@@ -68,7 +66,7 @@ class UserModel{
         $this->email = $email;
     }
 
-    public function setPassword(string $password): void {
+    public function setPassword(string $passwordHash): void {
         $this->passwordHash = $passwordHash;
     }
 
@@ -76,7 +74,10 @@ class UserModel{
         $this->admin = $admin;
     }
 
-    public function verifyPassword(string $plainPassword): bool {
+    public function assertPassword(string $plainPassword): bool {
+        if($plainPassword == null){
+            throw new InvalidArgumentException("No defined password on a userListItem");
+        }
         return password_verify($plainPassword, $this->passwordHash);
     }
 }
