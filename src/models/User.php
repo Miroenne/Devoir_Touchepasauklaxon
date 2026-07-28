@@ -33,9 +33,9 @@ class UserModel implements JsonSerializable {
             'lastName' => $this->lastName,
             'email' => $this->email,
             'phoneNumber' => $this->phoneNumber,
-            'admin' => $this->phoneNumber
+            'admin' => $this->admin
         ];
-    }
+    }    
 
     public function getId(): ?int {
         return $this->id;
@@ -57,11 +57,18 @@ class UserModel implements JsonSerializable {
         return $this->email;
     }
 
+    public function getPasswordHash():string {
+        return $this->passwordHash;
+    }
+
     public function getAdmin(): bool {
         return $this->admin;
     }
 
-   
+    public function setId(int $id):void{
+        $this->id = $id;
+    }
+
     public function setFirstName(string $firstName): void {
         $this->firstName = $firstName;
     }
@@ -86,10 +93,7 @@ class UserModel implements JsonSerializable {
         $this->admin = $admin;
     }
 
-    public function assertPassword(string $plainPassword): bool {
-        if($plainPassword == null){
-            throw new InvalidArgumentException("No defined password on a userListItem");
-        }
+    public function assertPassword(string $plainPassword): bool {        
         return password_verify($plainPassword, $this->passwordHash);
     }
 }

@@ -6,10 +6,13 @@ spl_autoload_register(function ($class){
     
     $map = [
         'Database\\ConnectDatabase' => 'db/connect.php',
-        'Error\\ErrorBuilder' => 'utils/error.php',
+        'Exception\\InvalidCredentialsException' => 'utils/invalidcredentials.php',
+        'Exception\\DomainException' => 'utils/domainexception.php',
+        'Exception\\Serialized' => 'utils/exceptionserialize.php',
         'User\\UserModel' => 'models/User.php',
         'User\\UserRepository' => 'repositories/usersRepository.php',
         'User\\UserServices' => 'services/usersServices.php',
+        'User\\UserController' => 'controllers/usersControllers.php',
         'Trip\\TripModel' => 'models/Trips.php',
         'Agency\\AgencyModel' => 'models/Agencies.php',
         
