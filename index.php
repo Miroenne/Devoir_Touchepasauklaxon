@@ -19,6 +19,38 @@ use App\Agency\AgencyModel;
 
   $userController = new UserController(new UserServices(new UserRepository), new Serialized());
 
+  $result = $userController->getAllUsers();
+
+  $tabLength = count($result);
+
+  for($i = 0; $i < $tabLength; $i++){
+
+    
+
+
+    $user = json_decode($result[$i]);
+    
+    
+    echo '<pre>';
+    echo $user->id;
+    echo '<pre>';
+    echo $user->lastName;
+    echo '<pre>';
+    echo $user->firstName;
+    echo '<pre>';
+    echo $user->email;
+    echo '<pre>';
+    echo $user->phoneNumber;
+    
+  }
+
+  
+
+
+  /*
+  $_POST['email'] = 'alexandre.martin@email.fr';
+  $_POST['password'] = 'Martin@AlexandreMDP';
+
   $result = $userController->login();
 
   echo '<prev>';
@@ -29,7 +61,7 @@ use App\Agency\AgencyModel;
   echo $result['code'];
 
 
-  /*
+  
   $user = json_decode($result['user']);  
   $respCode = $result['responseCode'];
   echo '<pre>';

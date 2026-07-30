@@ -68,6 +68,7 @@ class UserRepository{
         foreach($rows as $row){
             $users [] = $this->mapRowToUserListItem($row);
         } 
+        
         return $users;       
     }
 

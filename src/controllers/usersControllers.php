@@ -15,8 +15,9 @@ class UserController {
     public function __construct(private UserServices $services, private Serialized $serialize){}
 
     public function login() {
-        $email = 'alexandre.artin@email.fr';
-        $password = 'Martin@AlexandreMDP';
+        
+        $email = $_POST['email'];
+        $password = $_POST['password'];
 
         try{
             $result = $this->services->login($email, $password);
@@ -46,6 +47,28 @@ class UserController {
             return $this->serialize->serializeException($e->getMessage(), 404);
         }        
         
+    }
+
+    public function getAllUsers() {
+
+        try{
+            $result = $this->services->getAllUsers();
+
+            $users = $result;
+            
+
+            foreach($users as $user){
+               
+                $json = json_encode($user);
+                $jsonUsers [] = $json;
+
+            }
+
+            return $jsonUsers;
+        }catch(DomainException $e){
+            return $this->serialize->serializeException($e->getMessage(), 401);
+        }
+
     }
 
 }
