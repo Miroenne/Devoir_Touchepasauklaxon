@@ -10,19 +10,21 @@ use App\Exception\Serialized;
 use JsonSerializable;
 
 
-class UserController {
+class UserController
+{
 
-    public function __construct(private UserServices $services, private Serialized $serialize){}
+    public function __construct(private UserServices $services, private Serialized $serialize) {}
 
-    public function login() {
-        
+    public function login()
+    {
+
         $email = $_POST['email'];
         $password = $_POST['password'];
 
-        try{
+        try {
             $result = $this->services->login($email, $password);
-            
-             setcookie(
+
+            setcookie(
                 'csrf-token',
                 $result['csrfToken'],
                 [
@@ -37,38 +39,48 @@ class UserController {
             $user = $result['user'];
 
             $json = json_encode($user);
-            
+
             return ['user' => $json, 'responseCode' => 200];
-
-
-        }catch (InvalidCredentialsException $e){
+        } catch (InvalidCredentialsException $e) {
             return $this->serialize->serializeException($e->getMessage(), 401);
-        }catch(DomainException $e){
+        } catch (DomainException $e) {
             return $this->serialize->serializeException($e->getMessage(), 404);
-        }        
-        
+        }
     }
 
-    public function getAllUsers() {
+    public function getAllUsers()
+    {
 
-        try{
+        try {
             $result = $this->services->getAllUsers();
 
             $users = $result;
-            
 
-            foreach($users as $user){
-               
+
+            foreach ($users as $user) {
+
                 $json = json_encode($user);
-                $jsonUsers [] = $json;
-
+                $jsonUsers[] = $json;
             }
 
             return $jsonUsers;
-        }catch(DomainException $e){
+        } catch (DomainException $e) {
             return $this->serialize->serializeException($e->getMessage(), 401);
         }
-
     }
 
+    public function getUserById()
+    {
+        $id = $_POST['id'];
+        if ($_SESSION['id'] === $id || $_SESSION['admin'] === true) {
+            try {
+                $result = $this->services->getUserById($id);
+                $user = json_encode($result);
+
+                return $user;
+            } catch (DomainException $e) {
+                return $this->serialize->serializeException($e->getMessage(), 401);
+            }
+        }
+    }
 }

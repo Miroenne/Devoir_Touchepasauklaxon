@@ -2,13 +2,14 @@
 
 namespace App\Middlewares;
 
-class IsConnected{
+class IsConnected
+{
 
-    public function __construct() {
-        if($_SESSION === false){
+    public function __construct()
+    {
+        if (!$_SESSION['id']) {
             return false;
         }
         return true;
     }
-
 }

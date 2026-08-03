@@ -25,11 +25,7 @@ use App\Agency\AgencyModel;
 
   for($i = 0; $i < $tabLength; $i++){
 
-    
-
-
     $user = json_decode($result[$i]);
-    
     
     echo '<pre>';
     echo $user->id;

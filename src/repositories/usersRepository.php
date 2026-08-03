@@ -8,17 +8,20 @@ use App\Error\ErrorBuilder;
 use App\Database\ConnectDatabase;
 use PDO;
 
-class UserRepository{
+class UserRepository
+{
 
-    
+
     private PDO $pdo;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->pdo = ConnectDatabase::connect();
     }
 
-    public function mapUserToUserListItem(UserModel $user): ?UserModel{
-        
+    public function mapUserToUserListItem(UserModel $user): ?UserModel
+    {
+
         return new UserModel(
             id: (int)$user->getId(),
             lastName: $user->getLastName(),
@@ -30,8 +33,9 @@ class UserRepository{
         );
     }
 
-    private function mapRowToUserListItem(array $row): ?UserModel{
-       
+    private function mapRowToUserListItem(array $row): ?UserModel
+    {
+
         return new UserModel(
             id: (int)$row['user_Id'],
             lastName: $row['user_LastName'],
@@ -43,8 +47,9 @@ class UserRepository{
         );
     }
 
-    private function mapRowToUser(array $row): ?UserModel {
-        
+    private function mapRowToUser(array $row): ?UserModel
+    {
+
         return new UserModel(
             id: (int)$row['user_Id'],
             lastName: $row['user_LastName'],
@@ -54,46 +59,48 @@ class UserRepository{
             passwordHash: $row['user_Password'],
             admin: (bool)$row['user_Admin']
         );
-    } 
+    }
 
-    public function getAllUsers(): array {
+    public function getAllUsers(): ?array
+    {
 
         $stmt = $this->pdo->query("SELECT user_Id, user_FirstName, user_LastName, user_Email,
          user_PhoneNumber, user_Admin FROM users");
 
         $rows = $stmt->fetchAll();
-        if(!$rows){
+        if (!$rows) {
             return null;
         }
-        foreach($rows as $row){
-            $users [] = $this->mapRowToUserListItem($row);
-        } 
-        
-        return $users;       
+        foreach ($rows as $row) {
+            $users[] = $this->mapRowToUserListItem($row);
+        }
+
+        return $users;
     }
 
-    public function getUserById(?int $id): ?UserModel{
+    public function getUserById(?int $id): ?UserModel
+    {
 
-        $stmt = $this->pdo-> prepare("SELECT * FROM users WHERE user_Id = :id");
+        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE user_Id = :id");
         $stmt->execute(['id' => $id]);
 
         $row = $stmt->fetch();
-        if(!$row){
+        if (!$row) {
             return null;
         }
-        return $this->mapRowToUser($row);        
+        return $this->mapRowToUser($row);
     }
 
-    public function getUserByEmail(string $email): ?UserModel{
+    public function getUserByEmail(string $email): ?UserModel
+    {
 
         $stmt = $this->pdo->prepare("SELECT * FROM users WHERE user_Email = :email");
         $stmt->execute(['email' => $email]);
 
-        $row = $stmt->fetch();   
-        if(!$row){
+        $row = $stmt->fetch();
+        if (!$row) {
             return null;
-        }     
+        }
         return $this->mapRowToUser($row);
     }
-
 }
