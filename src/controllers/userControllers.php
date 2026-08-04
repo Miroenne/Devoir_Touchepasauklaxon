@@ -10,10 +10,16 @@ use App\Exception\Serialized;
 use JsonSerializable;
 
 
-class UserController
+class UserControllers
 {
 
     public function __construct(private UserServices $services, private Serialized $serialize) {}
+
+    public static function create(): self
+    {
+        return new self(new UserServices(new UserRepository()), new Serialized());
+    }
+
 
     public function loginController(string $email, string $password)
     {
@@ -45,7 +51,7 @@ class UserController
         }
     }
 
-    public function logoutController($id)
+    public function logoutController(int $id)
     {
 
         if ($_SESSION['id'] === $id) {
@@ -104,14 +110,20 @@ class UserController
         }
     }
 
-    public function getUserByIdController(int $id)
+    public function getUserByIdController()
     {
+        if ($_POST['id'] && !is_int($_POST['id'])) {
+            $id = (int) $_POST['id'];
+        }
+
+        var_dump($id);
+        $_SESSION['id'] = 1;
 
         if ($_SESSION['id'] === $id || $_SESSION['admin'] === true) {
             try {
                 $result = $this->services->getUserByIdService($id);
                 $user = json_encode($result);
-
+                echo $user;
                 return $user;
             } catch (DomainException $e) {
                 return $this->serialize->serializeException($e->getMessage(), 401);
@@ -119,13 +131,15 @@ class UserController
         }
     }
 
-    public function getUserByEmailController(string $email)
+    public function getUserByEmailController()
     {
+
+        $email = $_POST['email'];
 
         try {
             $result = $this->services->getUserByIdService($email);
             $user = json_encode($result);
-
+            echo $user;
             return $user;
         } catch (DomainException $e) {
             return $this->serialize->serializeException($e->getMessage(), 401);
