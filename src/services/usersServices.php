@@ -5,6 +5,8 @@ namespace App\User;
 use App\Exception\InvalidCredentialsException;
 use App\Exception\DomainException;
 
+
+
 class UserServices
 {
 
@@ -12,7 +14,7 @@ class UserServices
 
     public function __construct(private UserRepository $repository) {}
 
-    public function login(string $email, string $plainPassword)
+    public function loginService(string $email, string $plainPassword)
     {
         $user = $this->repository->getUserByEmail($email);
 
@@ -33,7 +35,8 @@ class UserServices
         return ['user' => $user, 'csrfToken' => $csrfToken];
     }
 
-    public function getAllUsers(): array
+
+    public function getAllUsersService(): array
     {
         $users = $this->repository->getAllUsers();
 
@@ -44,7 +47,7 @@ class UserServices
         return $users;
     }
 
-    public function getUserById(int $id): ?UserModel
+    public function getUserByIdService(int $id): ?UserModel
     {
 
         $user = $this->repository->getUserById($id);
@@ -56,7 +59,7 @@ class UserServices
         return $user;
     }
 
-    public function getUserByEmail(string $email): ?UserModel
+    public function getUserByEmailService(string $email): ?UserModel
     {
         $user = $this->repository->getUserByEmail($email);
 

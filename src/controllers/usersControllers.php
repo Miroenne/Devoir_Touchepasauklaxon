@@ -15,14 +15,11 @@ class UserController
 
     public function __construct(private UserServices $services, private Serialized $serialize) {}
 
-    public function login()
+    public function loginController(string $email, string $password)
     {
 
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-
         try {
-            $result = $this->services->login($email, $password);
+            $result = $this->services->loginService($email, $password);
 
             setcookie(
                 'csrf-token',
@@ -48,11 +45,49 @@ class UserController
         }
     }
 
-    public function getAllUsers()
+    public function logoutController($id)
+    {
+
+        if ($_SESSION['id'] === $id) {
+            $_SESSION = [];
+
+            if (ini_get('session.use_cookies')) {
+                $p = session_get_cookie_params();
+                setcookie(session_name(), '', [
+                    'expires' => time() - 42000,
+                    'path' => $p['path'],
+                    'domain' => $p['domain'],
+                    'secure' => $p['secure'],
+                    'httponly' => $p['httponly'],
+                    'samesite' => $p['samesite'],
+                ]);
+            }
+
+            setcookie('csrf-token', '', [
+                'expires' => time() - 3600,
+                'path' => '/',
+                'httponly' => 'true',
+                'secure' => true,
+                'samesite' => 'none'
+            ]);
+
+
+            session_destroy();
+            return true;
+        } else {
+            $error = [
+                'message' => "Une erreur s'est produite, déconnexion impossible",
+                'code' => 401
+            ];
+            return $error;
+        }
+    }
+
+    public function getAllUsersController()
     {
 
         try {
-            $result = $this->services->getAllUsers();
+            $result = $this->services->getAllUsersService();
 
             $users = $result;
 
@@ -69,18 +104,31 @@ class UserController
         }
     }
 
-    public function getUserById()
+    public function getUserByIdController(int $id)
     {
-        $id = $_POST['id'];
+
         if ($_SESSION['id'] === $id || $_SESSION['admin'] === true) {
             try {
-                $result = $this->services->getUserById($id);
+                $result = $this->services->getUserByIdService($id);
                 $user = json_encode($result);
 
                 return $user;
             } catch (DomainException $e) {
                 return $this->serialize->serializeException($e->getMessage(), 401);
             }
+        }
+    }
+
+    public function getUserByEmailController(string $email)
+    {
+
+        try {
+            $result = $this->services->getUserByIdService($email);
+            $user = json_encode($result);
+
+            return $user;
+        } catch (DomainException $e) {
+            return $this->serialize->serializeException($e->getMessage(), 401);
         }
     }
 }

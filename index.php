@@ -13,90 +13,42 @@ use App\Trip\TripModel;
 
 use App\Agency\AgencyModel;
 
-/**
- * CODES DE TEST A SUPPRIMER AVANT MISE EN PROD
- */
+$userController = new UserController(new UserServices(new UserRepository), new Serialized());
 
-  $userController = new UserController(new UserServices(new UserRepository), new Serialized());
+$token = $_COOKIE['csrf-token'] ?? null;
+?>
 
-  $result = $userController->getAllUsers();
+<!DOCTYPE html>
+<html lang="fr">
 
-  $tabLength = count($result);
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Touche pas au klaxon</title>
+</head>
 
-  for($i = 0; $i < $tabLength; $i++){
+<body>
+  <?php
+  if (!$token) {
+  ?>
+    <main>
+      <button type="button" onclick="window.location.href='/src/pages/login.php'">Connexion</button>
+    </main>
+  <?php
+  } else {
 
-    $user = json_decode($result[$i]);
-    
-    echo '<pre>';
-    echo $user->id;
-    echo '<pre>';
-    echo $user->lastName;
-    echo '<pre>';
-    echo $user->firstName;
-    echo '<pre>';
-    echo $user->email;
-    echo '<pre>';
-    echo $user->phoneNumber;
-    
+    $jsonUser = $userController->getUserByIdController($_SESSION['id']);
+    $user = json_decode($jsonUser);
+  ?>
+    <main>
+      <h1>Bonjour, <?php echo $user->firstName . ' ' . $user->lastName ?></h1>
+      <button onclick="window.location.href='/src/pages/logout.php'">
+        Déconnexion
+      </button>
+    </main>
+  <?php
   }
+  ?>
+</body>
 
-  
-
-
-  /*
-  $_POST['email'] = 'alexandre.martin@email.fr';
-  $_POST['password'] = 'Martin@AlexandreMDP';
-
-  $result = $userController->login();
-
-  echo '<prev>';
-  var_dump($result);
-  echo '<br>';
-  echo $result['message'];
-  echo '<br>';
-  echo $result['code'];
-
-
-  
-  $user = json_decode($result['user']);  
-  $respCode = $result['responseCode'];
-  echo '<pre>';
-  echo $respCode;
-  echo '<pre>';
-  echo $user->id;
-  */
-
-  
-
-/*
-$userService = new UserServices(new UserRepository());
-
-$user = $userService->login('alexandre.martin@email.fr', 'Martin@AlexandreMDP');
-echo 'Variable user depuis index.php : <br>';
-var_dump($user);*/
-
-
-  /*if($_SESSION['isConnected']){
-    echo 'utilisateur connecté : ';
-  }
-    echo '<pre>';
-    echo $user->getLastName();
-    echo '<pre>';
-    echo $user->getFirstName();
-*/
-
- /*foreach($users as $user){
-   echo '<pre>';
-    var_dump($user);
-    echo '<pre>';
-    
-    echo $user->getLastName();
-    echo '<pre>';
-    echo $user->getFirstName();
-    echo '<pre>';
-    echo $user->getEmail();
-    echo '<pre>';
-    echo $user->getPhoneNumber();
-    echo '<pre>';
-
-}*/
+</html>
