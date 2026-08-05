@@ -21,11 +21,8 @@ class UserControllers
     }
 
 
-    public function loginController()
+    public function loginController(string $email, string $password)
     {
-
-        $email = $_POST['email'];
-        $password = $_POST['password'];
 
         try {
             $result = $this->services->loginService($email, $password);
@@ -54,10 +51,8 @@ class UserControllers
         }
     }
 
-    public function logoutController()
+    public function logoutController(int $id)
     {
-        $id = $_POST['id'];
-
         if ($_SESSION['id'] === $id) {
             $_SESSION = [];
 
@@ -95,40 +90,40 @@ class UserControllers
 
     public function getAllUsersController()
     {
+        if ($_SESSION) {
 
-        try {
-            $result = $this->services->getAllUsersService();
+            try {
+                $result = $this->services->getAllUsersService();
 
-            $users = $result;
+                $users = $result;
 
 
-            foreach ($users as $user) {
+                foreach ($users as $user) {
 
-                $json = json_encode($user);
-                $jsonUsers[] = $json;
+                    $json = json_encode($user);
+
+                    $jsonUsers[] = $json;
+                }
+
+                return $jsonUsers;
+            } catch (DomainException $e) {
+                return $this->serialize->serializeException($e->getMessage(), 401);
             }
-
-            return $jsonUsers;
-        } catch (DomainException $e) {
-            return $this->serialize->serializeException($e->getMessage(), 401);
+        } else {
+            echo 'Access require credentials';
         }
     }
 
-    public function getUserByIdController()
+    public function getUserByIdController(int $id)
     {
-
-        if ($_POST['id'] && !is_int($_POST['id'])) {
-            $id = (int) $_POST['id'];
-        }
-
-
+        echo 'dans le service getbyid';
         $_SESSION['id'] = 1;
 
         if ($_SESSION['id'] === $id || $_SESSION['admin'] === true) {
             try {
                 $result = $this->services->getUserByIdService($id);
                 $user = json_encode($result);
-
+                echo $user;
                 return $user;
             } catch (DomainException $e) {
                 return $this->serialize->serializeException($e->getMessage(), 401);
@@ -143,7 +138,7 @@ class UserControllers
         try {
             $result = $this->services->getUserByEmailService($email);
             $user = json_encode($result);
-
+            echo $user;
             return $user;
         } catch (DomainException $e) {
             return $this->serialize->serializeException($e->getMessage(), 401);

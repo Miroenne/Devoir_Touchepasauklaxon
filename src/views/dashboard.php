@@ -16,6 +16,16 @@ use App\Agency\AgencyModel;
 $userController = new UserControllers(new UserServices(new UserRepository), new Serialized());
 
 $token = $_COOKIE['csrf-token'] ?? null;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $logout = $userController->logoutController($_POST['id']);
+
+    if ($logout) {
+        header('Location: ../../index.php');
+        exit;
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -37,14 +47,15 @@ $token = $_COOKIE['csrf-token'] ?? null;
     <?php
     } else {
 
-        $jsonUser = fetch("localhost:8080/user/id?id={$_SESSION['id']}");
+        $jsonUser = $userController->getUserByIdController($_SESSION['id']);
         $user = json_decode($jsonUser);
     ?>
         <main>
             <h1>Bonjour, <?php echo $user->firstName . ' ' . $user->lastName ?></h1>
-            <button onclick="window.location.href='/src/views/logout.php'">
-                Déconnexion
-            </button>
+            <form method="post">
+                <input hidden=true name='id' value=<?php $_SESSION['id'] ?>>
+                <input type="submit" value="Déconnexion">
+            </form>
         </main>
     <?php
     }

@@ -13,14 +13,15 @@ return [
         'path' => '/user/login',
         'namespace' => 'App\\User\\',
         'controller' => 'userControllers',
-        'action' => 'loginController'
+        'action' => 'loginController',
     ],
     [
         'method' => 'POST',
         'path' => '/user/logout',
         'namespace' => 'App\\User\\',
         'controller' => 'userControllers',
-        'action' => 'logoutController'
+        'action' => 'logoutController',
+
     ],
     [
         'method' => 'GET',
@@ -35,6 +36,7 @@ return [
         'namespace' => 'App\\User\\',
         'controller' => 'userControllers',
         'action' => 'getUserByIdController',
+
     ],
     [
         'method' => 'POST',
@@ -42,5 +44,6 @@ return [
         'namespace' => 'App\\User\\',
         'controller' => 'userControllers',
         'action' => 'getUserByEmailController',
+
     ],
 ];

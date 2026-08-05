@@ -3,24 +3,23 @@ session_start();
 require __DIR__ . '/../../autoloader.php';
 
 use App\Exception\Serialized;
-use App\User\UserController;
+use App\User\UserControllers;
 use App\User\UserRepository;
 use App\User\UserServices;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $userController = new UserController(new UserServices(new UserRepository()), new Serialized());
+    $userController = new UserControllers(new UserServices(new UserRepository()), new Serialized());
 
-    $email = $_POST['email'];
-    $password = $_POST['mdp'];
+    $login = $userController->loginController($_POST['email'], $_POST['mdp']);
 
-    $login = $userController->loginController($email, $password);
-
-    $user = json_decode($login['user']);
-    $_SESSION['id'] = $user->id;
-    $_SESSION['admin'] = $user->admin;
-    header('Location: ../../index.php');
-    exit;
+    if ($login) {
+        $user = json_decode($login['user']);
+        $_SESSION['id'] = $user->id;
+        $_SESSION['admin'] = $user->admin;
+        header('Location: ../../index.php');
+        exit;
+    }
 }
 
 ?>

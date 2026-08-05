@@ -3,14 +3,14 @@ session_start();
 require __DIR__ . '/../../autoloader.php';
 
 use App\Exception\Serialized;
-use App\User\UserController;
+use App\User\UserControllers;
 use App\User\UserRepository;
 use App\User\UserServices;
 
 $serialize = new Serialized();
-$userController = new UserController(new UserServices(new UserRepository()), new Serialized());
+$userController = new UserControllers(new UserServices(new UserRepository()), new Serialized());
 
-$logout = $userController->logoutController($_SESSION['id']);
+$logout = $userController->logoutController();
 if ($logout === true) {
     header('Location: ../../index.php');
     exit;
