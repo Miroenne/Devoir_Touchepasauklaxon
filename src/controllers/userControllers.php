@@ -21,8 +21,11 @@ class UserControllers
     }
 
 
-    public function loginController(string $email, string $password)
+    public function loginController()
     {
+
+        $email = $_POST['email'];
+        $password = $_POST['password'];
 
         try {
             $result = $this->services->loginService($email, $password);
@@ -51,8 +54,9 @@ class UserControllers
         }
     }
 
-    public function logoutController(int $id)
+    public function logoutController()
     {
+        $id = $_POST['id'];
 
         if ($_SESSION['id'] === $id) {
             $_SESSION = [];
@@ -112,18 +116,19 @@ class UserControllers
 
     public function getUserByIdController()
     {
+
         if ($_POST['id'] && !is_int($_POST['id'])) {
             $id = (int) $_POST['id'];
         }
 
-        var_dump($id);
+
         $_SESSION['id'] = 1;
 
         if ($_SESSION['id'] === $id || $_SESSION['admin'] === true) {
             try {
                 $result = $this->services->getUserByIdService($id);
                 $user = json_encode($result);
-                echo $user;
+
                 return $user;
             } catch (DomainException $e) {
                 return $this->serialize->serializeException($e->getMessage(), 401);
@@ -133,13 +138,12 @@ class UserControllers
 
     public function getUserByEmailController()
     {
-
         $email = $_POST['email'];
 
         try {
-            $result = $this->services->getUserByIdService($email);
+            $result = $this->services->getUserByEmailService($email);
             $user = json_encode($result);
-            echo $user;
+
             return $user;
         } catch (DomainException $e) {
             return $this->serialize->serializeException($e->getMessage(), 401);

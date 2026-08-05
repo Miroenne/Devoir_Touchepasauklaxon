@@ -16,32 +16,14 @@ foreach ($routes as $route) {
         $class = $route['namespace'] . $route['controller'];
         $action = $route['action'];
 
-        /*switch (true) {
-            case str_contains('index', $route['action']):
-                $controller = new $class();
-                $controller->$action();
-                break;
-            case str_contains('login', $route['action']):
-
-            case str_contains('logout', $route['action']):
-        }
-
-        
         if (str_contains('index', $route['action'])) {
 
             $controller = new $class();
             $controller->$action();
-        } elseif (str_contains('getAll', $route['action'])) {
-
-            $controller = $class::create();
-            $controller->$action();
         } else {
             $controller = $class::create();
-            $controller->$action($route['argument']);
-        }*/
-
-        $controller = $class::create();
-        $controller->$action();
+            $controller->$action();
+        }
 
         exit;
     }
