@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = json_decode($login['user']);
         $_SESSION['id'] = $user->id;
         $_SESSION['admin'] = $user->admin;
-        header('Location: ../../index.php');
+        header('Location: /');
         exit;
     }
 }

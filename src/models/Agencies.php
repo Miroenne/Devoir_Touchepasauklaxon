@@ -2,28 +2,31 @@
 
 namespace App\Agency;
 
-class AgencyModel {
+class AgencyModel
+{
 
     private readonly ?int $id;
-    private $name;
+    private string $name;
 
 
-    public function __construct($id, $name){
-
+    public function __construct(int $id, string $name)
+    {
         $this->id = $id;
         $this->name = $name;
-
     }
 
-    public function getId(): ?int{
+    public function getId(): ?int
+    {
         return $this->id;
     }
 
-    public function getName(): string {
-        return $this->name = $name;
+    public function getName(): string
+    {
+        return $this->name;
     }
 
-    public function setName(string $name): void {
+    public function setName(string $name): void
+    {
         $this->name = $name;
     }
 }

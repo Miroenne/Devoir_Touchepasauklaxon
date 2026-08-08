@@ -9,13 +9,14 @@ spl_autoload_register(function ($class) {
         'Exception\\InvalidCredentialsException' => 'utils/invalidcredentials.php',
         'Exception\\DomainException' => 'utils/domainexception.php',
         'Exception\\Serialized' => 'utils/exceptionserialize.php',
-        'Views\\DashboardController' => 'controllers/dashboardController.php',
+        'Views\\ViewsController' => 'controllers/ViewsController.php',
         'User\\UserModel' => 'models/User.php',
         'User\\UserRepository' => 'repositories/userRepository.php',
         'User\\UserServices' => 'services/userServices.php',
         'User\\UserControllers' => 'controllers/userControllers.php',
         'Trip\\TripModel' => 'models/Trips.php',
         'Agency\\AgencyModel' => 'models/Agencies.php',
+        'Agency\\AgencyRepository' => 'repositories/agencyRepository.php'
 
     ];
 

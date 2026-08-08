@@ -5,8 +5,22 @@ return [
         'method' => 'GET',
         'path' => '/',
         'namespace' => 'App\\Views\\',
-        'controller' => 'DashboardController',
+        'controller' => 'ViewsController',
         'action' => 'index'
+    ],
+    [
+        'method' => 'POST',
+        'path' => '/',
+        'namespace' => 'App\\Views\\',
+        'controller' => 'ViewsController',
+        'action' => 'logout'
+    ],
+    [
+        'method' => 'GET',
+        'path' => '/user/login',
+        'namespace' => 'App\\Views\\',
+        'controller' => 'ViewsController',
+        'action' => 'login'
     ],
     [
         'method' => 'POST',

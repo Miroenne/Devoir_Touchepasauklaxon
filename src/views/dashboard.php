@@ -8,23 +8,12 @@ use App\Exception\Serialized;
 use App\User\UserRepository;
 use App\User\UserServices;
 use App\User\UserControllers;
+use App\Agency\AgencyRepository;
 
-use App\Trip\TripModel;
-
-use App\Agency\AgencyModel;
 
 $userController = new UserControllers(new UserServices(new UserRepository), new Serialized());
 
 $token = $_COOKIE['csrf-token'] ?? null;
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $logout = $userController->logoutController($_POST['id']);
-
-    if ($logout) {
-        header('Location: ../../index.php');
-        exit;
-    }
-}
 
 ?>
 
@@ -49,16 +38,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $jsonUser = $userController->getUserByIdController($_SESSION['id']);
         $user = json_decode($jsonUser);
+        $id = $user->id;
+        echo $id;
     ?>
         <main>
             <h1>Bonjour, <?php echo $user->firstName . ' ' . $user->lastName ?></h1>
             <form method="post">
-                <input hidden=true name='id' value=<?php $_SESSION['id'] ?>>
-                <input type="submit" value="Déconnexion">
+                <input type='number' hidden=true id="id" name='id' value="<?php echo $id ?>" />
+                <input type="submit" value="Déconnexion" />
             </form>
         </main>
     <?php
     }
+
+    $agencyRepository = new AgencyRepository();
+
+    $newAgency = $agencyRepository->createAgency('Antibes');
+
+    if ($newAgency) {
+        echo 'Agence crée avec succès' . '<br>';
+    }
+
+    $agencies = $agencyRepository->getAllAgencies();
+
+    foreach ($agencies as $agency) {
+        echo 'Agence ID : ' . $agency->getId() . '<br>';
+        echo 'Nom agence : ' . $agency->getName() . '<br>';
+    }
+
     ?>
 </body>
 

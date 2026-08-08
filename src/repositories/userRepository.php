@@ -4,7 +4,6 @@ namespace App\User;
 
 use App\User\UserModel;
 use InvalidArgumentException;
-use App\Error\ErrorBuilder;
 use App\Database\ConnectDatabase;
 use PDO;
 
@@ -65,7 +64,7 @@ class UserRepository
     {
 
         $stmt = $this->pdo->query("SELECT user_Id, user_FirstName, user_LastName, user_Email,
-         user_PhoneNumber, user_Admin FROM users");
+         user_PhoneNumber, user_Admin FROM users ORDER BY user_Admin DESC, user_LastName ASC");
 
         $rows = $stmt->fetchAll();
         if (!$rows) {

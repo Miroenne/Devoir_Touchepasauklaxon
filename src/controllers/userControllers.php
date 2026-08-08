@@ -53,6 +53,7 @@ class UserControllers
 
     public function logoutController(int $id)
     {
+
         if ($_SESSION['id'] === $id) {
             $_SESSION = [];
 
@@ -116,14 +117,12 @@ class UserControllers
 
     public function getUserByIdController(int $id)
     {
-        echo 'dans le service getbyid';
-        $_SESSION['id'] = 1;
 
         if ($_SESSION['id'] === $id || $_SESSION['admin'] === true) {
             try {
                 $result = $this->services->getUserByIdService($id);
                 $user = json_encode($result);
-                echo $user;
+
                 return $user;
             } catch (DomainException $e) {
                 return $this->serialize->serializeException($e->getMessage(), 401);
