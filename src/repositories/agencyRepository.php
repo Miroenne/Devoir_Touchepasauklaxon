@@ -3,7 +3,6 @@
 namespace App\Agency;
 
 use App\Agency\AgencyModel;
-use InvalidArgumentException;
 use App\Database\ConnectDatabase;
 use PDO;
 
@@ -76,15 +75,16 @@ class AgencyRepository
 
     public function getAgencyByName(string $name): ?array
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM agencies WHERE agency_Name LIKE '%':name'%' 
-        ORDER BY agnecy_Name");
-        $stmt->execute(['name' => $name]);
+        $stmt = $this->pdo->prepare("SELECT * FROM agencies WHERE LOWER(agency_Name) LIKE :name
+        ORDER BY agency_Name");
+        $stmt->execute(['name' => '%' . strtolower($name) . '%']);
 
         $rows = $stmt->fetchAll();
 
         if (!$rows) {
             return null;
         }
+
         foreach ($rows as $row) {
             $agencies[] = $this->mapRowToAgency($row);
         }
@@ -94,8 +94,8 @@ class AgencyRepository
 
     public function updateAgency(int $id, string $name): bool
     {
-        $stmt = $this->pdo->prepare('UPDATE agencies SET agency_Name = ":name" 
-        WHERE agency_Id = ":id" ');
+        $stmt = $this->pdo->prepare('UPDATE agencies SET agency_Name = :name 
+        WHERE agency_Id = :id ');
         $stmt->execute(['name' => $name, 'id' => $id]);
 
         return $stmt->rowcount() > 0;

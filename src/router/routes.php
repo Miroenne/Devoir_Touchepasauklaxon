@@ -17,7 +17,14 @@ return [
     ],
     [
         'method' => 'GET',
-        'path' => '/user/login',
+        'path' => '/agencies',
+        'namespace' => 'App\\Views\\',
+        'controller' => 'ViewsController',
+        'action' => 'agencies'
+    ],
+    [
+        'method' => 'GET',
+        'path' => '/login',
         'namespace' => 'App\\Views\\',
         'controller' => 'ViewsController',
         'action' => 'login'
@@ -60,4 +67,5 @@ return [
         'action' => 'getUserByEmailController',
 
     ],
+
 ];

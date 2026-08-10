@@ -36,17 +36,16 @@ foreach ($routes as $route) {
                 break;
             case str_contains($action, 'ByEmail'):
 
-
+                $id = $_POST['id'];
                 $email = $_POST['email'];
 
                 $controller = $class::create();
-                $controller->$action($email);
+                $controller->$action($id, $email);
                 break;
-            case str_contains($action, 'login'):
-
+            case str_contains($action, 'loginController'):
 
                 $email = $_POST['email'];
-                $password = $_POST['password'];
+                $password = $_POST['mdp'];
 
                 $controller = $class::create();
                 $controller->$action($email, $password);

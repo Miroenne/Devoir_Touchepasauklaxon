@@ -2,7 +2,9 @@
 
 namespace App\Agency;
 
-class AgencyModel
+use JsonSerializable;
+
+class AgencyModel implements JsonSerializable
 {
 
     private readonly ?int $id;
@@ -13,6 +15,14 @@ class AgencyModel
     {
         $this->id = $id;
         $this->name = $name;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name
+        ];
     }
 
     public function getId(): ?int

@@ -91,28 +91,31 @@ class UserControllers
 
     public function getAllUsersController()
     {
-        if ($_SESSION) {
+        // if ($_SESSION) {
 
-            try {
-                $result = $this->services->getAllUsersService();
+        try {
+            $result = $this->services->getAllUsersService();
 
-                $users = $result;
+            $users = $result;
 
 
-                foreach ($users as $user) {
+            foreach ($users as $user) {
 
-                    $json = json_encode($user);
+                $json = json_encode($user);
 
-                    $jsonUsers[] = $json;
-                }
-
-                return $jsonUsers;
-            } catch (DomainException $e) {
-                return $this->serialize->serializeException($e->getMessage(), 401);
+                $jsonUsers[] = $json;
             }
-        } else {
-            echo 'Access require credentials';
+            var_dump($jsonUsers);
+            return $jsonUsers;
+        } catch (DomainException $e) {
+            return $this->serialize->serializeException($e->getMessage(), 404);
         }
+        /*  } else {
+            return $error = [
+                'message' => 'Credentials required',
+                'responseCode' => 403
+            ];
+        }*/
     }
 
     public function getUserByIdController(int $id)
@@ -125,22 +128,33 @@ class UserControllers
 
                 return $user;
             } catch (DomainException $e) {
-                return $this->serialize->serializeException($e->getMessage(), 401);
+                return $this->serialize->serializeException($e->getMessage(), 404);
             }
+        } else {
+            return $error = [
+                'message' => 'Credentials required',
+                'responseCode' => 403
+            ];
         }
     }
 
-    public function getUserByEmailController()
+    public function getUserByEmailController(int $id, string $email)
     {
-        $email = $_POST['email'];
 
-        try {
-            $result = $this->services->getUserByEmailService($email);
-            $user = json_encode($result);
-            echo $user;
-            return $user;
-        } catch (DomainException $e) {
-            return $this->serialize->serializeException($e->getMessage(), 401);
+        if ($_SESSION['id'] === $id || $_SESSION['admin'] === true) {
+            try {
+                $result = $this->services->getUserByEmailService($email);
+                $user = json_encode($result);
+                echo $user;
+                return $user;
+            } catch (DomainException $e) {
+                return $this->serialize->serializeException($e->getMessage(), 404);
+            }
+        } else {
+            return $error = [
+                'message' => 'Credentials required',
+                'responseCode' => 403
+            ];
         }
     }
 }

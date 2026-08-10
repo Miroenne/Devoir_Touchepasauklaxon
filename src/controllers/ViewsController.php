@@ -18,4 +18,9 @@ class ViewsController
     {
         require __DIR__ . '/../views/logout.php';
     }
+
+    public function agencies(): void
+    {
+        require __DIR__ . '/../views/agencies.php';
+    }
 }

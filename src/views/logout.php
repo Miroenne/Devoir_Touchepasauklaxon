@@ -12,12 +12,6 @@ $userController = new UserControllers(new UserServices(new UserRepository), new 
 
 $id = (int) $_POST['id'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-
-    header('Location: /');
-    exit;
-}
-
 ?>
 
 <!DOCTYPE html>

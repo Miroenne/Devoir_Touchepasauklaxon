@@ -3,6 +3,7 @@
 namespace App\User;
 
 use App\Exception\InvalidCredentialsException;
+use InvalidArgumentException;
 use App\Exception\DomainException;
 
 
@@ -36,7 +37,7 @@ class UserServices
     }
 
 
-    public function getAllUsersService(): array
+    public function getAllUsersService(): ?array
     {
         $users = $this->repository->getAllUsers();
 
