@@ -52,6 +52,9 @@ $token = $_COOKIE['csrf-token'] ?? null;
                 <form action="/agencies" method="GET">
                     <input type="submit" value="Agences" />
                 </form>
+                <form action="/trip" method="GET">
+                    <input type="submit" value="Nouveau trajet" />
+                </form>
             <?php } ?>
         </main>
     <?php

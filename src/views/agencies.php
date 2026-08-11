@@ -8,7 +8,7 @@ use App\Agency\AgencyRepository;
 
 $agencyController = new AgencyControllers(new AgencyServices(new AgencyRepository), new Serialized());
 
-$newAgency = $agencyController->updateAgencyController(9, 'Cannes');
+/*$newAgency = $agencyController->updateAgencyController(9, 'Cannes');
 var_dump($newAgency);
 echo '<br>';
 
@@ -16,8 +16,8 @@ if (isset($newAgency['responseCode']) !== 200) {
 
     echo "Message d'erreur : " . $newAgency['message'] . '<br>';
     echo "Code erreur : " . $newAgency['responseCode'] . '<br>';
-}
-$agencies = $agencyController->getAgencyByNameController('ant');
+}*/
+$agencies = $agencyController->getAllAgenciesController();
 
 if ($agencies) {
 

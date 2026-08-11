@@ -24,6 +24,20 @@ return [
     ],
     [
         'method' => 'GET',
+        'path' => '/trip',
+        'namespace' => 'App\\Views\\',
+        'controller' => 'ViewsController',
+        'action' => 'trip'
+    ],
+    [
+        'method' => 'GET',
+        'path' => '/test',
+        'namespace' => 'App\\Views\\',
+        'controller' => 'ViewsController',
+        'action' => 'test'
+    ],
+    [
+        'method' => 'GET',
         'path' => '/login',
         'namespace' => 'App\\Views\\',
         'controller' => 'ViewsController',

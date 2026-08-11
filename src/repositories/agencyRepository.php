@@ -24,20 +24,6 @@ class AgencyRepository
         );
     }
 
-    private function getCreatedAgency(string $name)
-    {
-        $stmt = $this->pdo->prepare("SELECT * FROM agencies WHERE agency_Name = :name");
-        $stmt->execute(['name' => $name]);
-
-        $agency = $stmt->fetch();
-
-        if (!$agency) {
-            return null;
-        }
-
-        return $this->mapRowToAgency($agency);
-    }
-
     public function createAgency(string $name): bool
     {
         $stmt = $this->pdo->prepare("INSERT INTO agencies (agency_Name) VALUES (:name)");
@@ -62,8 +48,7 @@ class AgencyRepository
 
     public function getAgencyById(int $id): ?AgencyModel
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM agencies WHERE agency_Id = :id 
-        ORDER BY agency_Name");
+        $stmt = $this->pdo->prepare("SELECT * FROM agencies WHERE agency_Id = :id");
         $stmt->execute(['id' => $id]);
 
         $row = $stmt->fetch();
