@@ -95,23 +95,6 @@ class TripRepository
         return $this->mapRowToTrip($row);
     }
 
-    public function getTripByDepartureAgency(int $id)
-    {
-
-        $stmt = $this->pdo->prepare("SELECT * FROM trips WHERE trip_DepartureAgencyId = :id");
-        $stmt->execute(['id' => $id]);
-
-        $rows = $stmt->fetchAll();
-
-        if (!$rows) {
-            return null;
-        }
-        foreach ($rows as $row) {
-            $trips[] = $this->mapRowToTrip($row);
-        }
-        return $trips;
-    }
-
     public function getAllActualTrips(DateTimeImmutable $date)
     {
         $date = $date->format('Y-m-d H:i:s');
@@ -134,7 +117,6 @@ class TripRepository
         DateTimeImmutable $departureDateTime,
         DateTimeImmutable $arrivalDateTime,
         int $space,
-        int $creatorUserId,
         int $departureAgencyId,
         int $arrivalAgencyId
     ) {
@@ -142,16 +124,17 @@ class TripRepository
             trip_DepartureDateTime = :departureDateTime,
             trip_ArrivalDateTime = :arrivalDateTime,
             trip_Space = :space,
-            trip_CreatorUserId = :creatorUserId,
             trip_DepartureAgencyId = :departureAgencyId,
             trip_ArrivalAgencyId = :arrivalAgencyId
         ");
 
+        $formattedDepartureDateTime = $departureDateTime->format('Y-m-d H:i:s');
+        $formattedArrivalDateTime = $arrivalDateTime->format('Y-m-d H:i:s');
+
         $stmt->execute([
-            'departureDateTime' => $departureDateTime,
-            'arrivalDateTime' => $arrivalDateTime,
+            'departureDateTime' => $formattedDepartureDateTime,
+            'arrivalDateTime' => $formattedArrivalDateTime,
             'space' => $space,
-            'creatorUserId' => $creatorUserId,
             'departureAgencyId' => $departureAgencyId,
             'arrivalAgencyId' => $arrivalAgencyId
         ]);

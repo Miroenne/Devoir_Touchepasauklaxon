@@ -16,6 +16,7 @@ spl_autoload_register(function ($class) {
         'User\\UserControllers' => 'controllers/userControllers.php',
         'Trip\\TripModel' => 'models/Trips.php',
         'Trip\\TripRepository' => 'repositories/tripRepository.php',
+        'Trip\\TripService' => 'services/tripServices.php',
         'Agency\\AgencyModel' => 'models/Agency.php',
         'Agency\\AgencyRepository' => 'repositories/agencyRepository.php',
         'Agency\\AgencyServices' => 'services/agencyServices.php',

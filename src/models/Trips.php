@@ -114,7 +114,7 @@ class TripModel implements JsonSerializable
         $this->arrivalAgencyId = $arrivalAgencyId;
     }
 
-    private function assertDateTime(
+    public function assertDateTime(
         DateTimeImmutable $departure,
         DateTimeImmutable $arrival
     ): void {

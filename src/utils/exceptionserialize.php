@@ -2,18 +2,17 @@
 
 namespace App\Exception;
 
-class Serialized{
+class Serialized
+{
 
-    public function __contruct(){
-        
-    }
+    public function __contruct() {}
 
 
-    public function serializeException(string $message, int $code): array{
+    public function serializeException(string $message, int $code): array
+    {
         return [
             'message' => $message,
-            'code' => $code
+            'responseCode' => $code
         ];
     }
-
 }
