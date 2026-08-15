@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Exception;
+namespace App\Utils;
 
-class Serialized
+class ExceptionSerialize
 {
 
     public function __contruct() {}

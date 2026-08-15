@@ -1,21 +1,22 @@
 <?php
 
-namespace App\Agency;
+namespace App\Controllers;
 
-use App\Agency\AgencyServices;
-use App\Exception\DomainException;
-use App\Exception\InvalidCredentialsException;
-use App\Exception\Serialized;
+use App\Services\AgencyServices;
+use App\Repositories\AgencyRepository;
+use App\Utils\DomainException;
+use App\Utils\InvalidCredentialsException;
+use App\Utils\ExceptionSerialize;
 use JsonSerializable;
 
 class AgencyControllers
 {
 
-    public function __construct(private AgencyServices $services, private Serialized $serialize) {}
+    public function __construct(private AgencyServices $services, private ExceptionSerialize $serialize) {}
 
     public static function create(): self
     {
-        return new self(new AgencyServices(new AgencyRepository()), new Serialized());
+        return new self(new AgencyServices(new AgencyRepository()), new ExceptionSerialize());
     }
 
     public function createAgencyController(string $name)
@@ -42,14 +43,16 @@ class AgencyControllers
 
     public function getAllAgenciesController()
     {
+        $isConnected = $_POST['isConnected'] || null;
 
-        if (!empty($_SESSION['id'])) {
+        if ($isConnected) {
             try {
                 $agencies = $this->services->getAllAgenciesService();
 
                 foreach ($agencies as $agency) {
-                    $json = json_encode($agency);
 
+                    $json = json_encode($agency);
+                    echo $json;
                     $jsonAgencies[] = $json;
                 }
 
@@ -57,11 +60,14 @@ class AgencyControllers
             } catch (DomainException $e) {
                 return $this->serialize->serializeException($e->getMessage(), 404);
             }
-        } else {
-            return $error = [
+        } elseif ($isConnected === null) {
+
+            $error = [
                 'message' => 'Credentials required',
                 'responseCode' => 403
             ];
+            var_dump($error);
+            return $error;
         }
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exception;
+namespace App\Utils;
 
 class InvalidCredentialsException extends \RuntimeException {
 

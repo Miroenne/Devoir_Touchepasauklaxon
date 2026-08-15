@@ -1,10 +1,12 @@
 <?php
 
-namespace App\User;
+namespace App\Services;
 
-use App\Exception\InvalidCredentialsException;
+use App\Repositories\UserRepository;
+use App\Models\UserModel;
+use App\Utils\InvalidCredentialsException;
 use InvalidArgumentException;
-use App\Exception\DomainException;
+use App\Utils\DomainException;
 
 
 

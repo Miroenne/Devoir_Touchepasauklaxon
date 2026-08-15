@@ -1,85 +1,20 @@
 <?php
 
-return [
-    [
-        'method' => 'GET',
-        'path' => '/',
-        'namespace' => 'App\\Views\\',
-        'controller' => 'ViewsController',
-        'action' => 'index'
-    ],
-    [
-        'method' => 'POST',
-        'path' => '/',
-        'namespace' => 'App\\Views\\',
-        'controller' => 'ViewsController',
-        'action' => 'logout'
-    ],
-    [
-        'method' => 'GET',
-        'path' => '/agencies',
-        'namespace' => 'App\\Views\\',
-        'controller' => 'ViewsController',
-        'action' => 'agencies'
-    ],
-    [
-        'method' => 'GET',
-        'path' => '/trip',
-        'namespace' => 'App\\Views\\',
-        'controller' => 'ViewsController',
-        'action' => 'trip'
-    ],
-    [
-        'method' => 'GET',
-        'path' => '/test',
-        'namespace' => 'App\\Views\\',
-        'controller' => 'ViewsController',
-        'action' => 'test'
-    ],
-    [
-        'method' => 'GET',
-        'path' => '/login',
-        'namespace' => 'App\\Views\\',
-        'controller' => 'ViewsController',
-        'action' => 'login'
-    ],
-    [
-        'method' => 'POST',
-        'path' => '/user/login',
-        'namespace' => 'App\\User\\',
-        'controller' => 'userControllers',
-        'action' => 'loginController',
-    ],
-    [
-        'method' => 'POST',
-        'path' => '/user/logout',
-        'namespace' => 'App\\User\\',
-        'controller' => 'userControllers',
-        'action' => 'logoutController',
+use FastRoute\RouteCollector;
 
-    ],
-    [
-        'method' => 'GET',
-        'path' => '/user',
-        'namespace' => 'App\\User\\',
-        'controller' => 'userControllers',
-        'action' => 'getAllUsersController'
-    ],
-    [
-        'method' => 'POST',
-        'path' => '/user/id',
-        'namespace' => 'App\\User\\',
-        'controller' => 'userControllers',
-        'action' => 'getUserByIdController',
+return function (RouteCollector $r) {
+    $r->addRoute('GET', '/', ['App\Controllers\ViewsController', 'index']);
+    $r->addRoute('POST', '/', ['App\Controllers\ViewsController', 'logout']);
+    $r->addRoute('GET', '/agencies', ['App\Controllers\ViewsController', 'agencies']);
+    $r->addRoute('GET', '/trip', ['App\Controllers\ViewsController', 'trip']);
+    $r->addRoute('GET', '/test', ['App\Controllers\ViewsController', 'test']);
+    $r->addRoute('GET', '/login', ['App\Controllers\ViewsController', 'login']);
 
-    ],
-    [
-        'method' => 'POST',
-        'path' => '/user/email',
-        'namespace' => 'App\\User\\',
-        'controller' => 'userControllers',
-        'action' => 'getUserByEmailController',
+    $r->addRoute('POST', '/user/login', ['App\Controllers\UserControllers', 'loginController']);
+    $r->addRoute('POST', '/user/logout', ['App\Controllers\UserControllers', 'logoutController']);
+    $r->addRoute('GET', '/user', ['App\Controllers\UserControllers', 'getAllUsersController']);
+    $r->addRoute('POST', '/user/id', ['App\Controllers\UserControllers', 'getUserByIdController']);
+    $r->addRoute('POST', '/user/email', ['App\Controllers\UserControllers', 'getUserByEmailController']);
 
-    ],
-
-];
+    $r->addRoute('POST', '/agency/all', ['App\Controllers\AgencyControllers', 'getAllAgenciesController']);
+};

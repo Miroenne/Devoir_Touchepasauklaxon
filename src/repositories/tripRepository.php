@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Trip;
+namespace App\Repositories;
 
-use App\Trip\TripModel;
-use App\Database\ConnectDatabase;
+use App\Models\TripModel;
+use App\Db\ConnectDatabase;
 use DateTimeImmutable;
 use PDO;
 

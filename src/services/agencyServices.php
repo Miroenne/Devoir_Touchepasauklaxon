@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Agency;
+namespace App\Services;
 
-use App\Exception\InvalidCredentialsException;
+use App\Repositories\AgencyRepository;
+use App\Utils\InvalidCredentialsException;
 use InvalidArgumentException;
-use App\Exception\DomainException;
+use App\Utils\DomainException;
 
 class AgencyServices
 {

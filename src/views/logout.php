@@ -1,14 +1,13 @@
 <?php
 session_start();
-require __DIR__ . '/../../autoloader.php';
 
-use App\Exception\Serialized;
+use App\Utils\ExceptionSerialize;
 
-use App\User\UserRepository;
-use App\User\UserServices;
-use App\User\UserControllers;
+use App\Repositories\UserRepository;
+use App\Services\UserServices;
+use App\Controllers\UserControllers;
 
-$userController = new UserControllers(new UserServices(new UserRepository), new Serialized());
+$userController = new UserControllers(new UserServices(new UserRepository), new ExceptionSerialize());
 
 $id = (int) $_POST['id'];
 

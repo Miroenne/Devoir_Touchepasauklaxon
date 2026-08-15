@@ -1,22 +1,23 @@
 <?php
 
-namespace App\Trip;
+namespace App\Services;
 
-use App\Exception\InvalidCredentialsException;
-use App\Exception\DomainException;
+use App\Utils\InvalidCredentialsException;
+use App\Utils\DomainException;
 use InvalidArgumentException;
-use App\Trip\TripModel;
+use App\Models\TripModel;
+use App\Repositories\TripRepository;
 use DateTimeImmutable;
-use App\Agency\AgencyControllers;
-use App\Agency\AgencyServices;
-use App\Agency\AgencyRepository;
-use App\Exception\Serialized;
-use App\User\UserRepository;
-use App\User\UserServices;
-use App\User\UserControllers;
+use App\Controllers\AgencyControllers;
+use App\Services\AgencyServices;
+use App\Repositories\AgencyRepository;
+use App\Utils\ExceptionSerialize;
+use App\Repositories\UserRepository;
+use App\Services\UserServices;
+use App\Controllers\UserControllers;
 use RuntimeException;
 
-class TripService
+class TripServices
 {
 
     private TripModel $model;
@@ -25,8 +26,8 @@ class TripService
 
     public function __construct(private TripRepository $repository)
     {
-        $this->agencyController = new AgencyControllers(new AgencyServices(new AgencyRepository), new Serialized());
-        $this->userController = new UserControllers(new UserServices(new UserRepository), new Serialized());
+        $this->agencyController = new AgencyControllers(new AgencyServices(new AgencyRepository), new ExceptionSerialize());
+        $this->userController = new UserControllers(new UserServices(new UserRepository), new ExceptionSerialize());
     }
 
     public function createTripService(
@@ -56,7 +57,7 @@ class TripService
 
         $model->assertSpace($space);
 
-        return $trip = $this->repository->createTrip(
+        $trip = $this->repository->createTrip(
             $departureDateTime,
             $arrivalDateTime,
             $space,
@@ -64,6 +65,12 @@ class TripService
             $departureAgencyId,
             $arrivalAgencyId
         );
+
+        if (!$trip) {
+            throw new DomainException('Trip cannot been created');
+        }
+
+        return $trip;
     }
 
     private function existingAgency(int $id): void
@@ -79,7 +86,7 @@ class TripService
         }
     }
 
-    private function assertCreator(int $id, int $updateUserId, bool $admin, string $message): void
+    private function assertUser(int $id, int $updateUserId, bool $admin, string $message): void
     {
         $updateTrip = $this->repository->getTripById($id);
 
@@ -146,7 +153,7 @@ class TripService
         $message = 'Only the creator of this trip or an admin can update it';
 
 
-        $this->assertCreator($id, $creatorUserId, $admin, $message);
+        $this->assertUser($id, $creatorUserId, $admin, $message);
 
         $model = new TripModel(
             null,
@@ -194,7 +201,7 @@ class TripService
 
         $message = 'Only the creator of this trip or an admin can delete it';
 
-        $this->assertCreator($id, $userId, $admin, $message);
+        $this->assertUser($id, $userId, $admin, $message);
 
         $deleteTrip = $this->repository->deleteTrip($id);
 

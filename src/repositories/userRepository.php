@@ -1,10 +1,10 @@
 <?php
 
-namespace App\User;
+namespace App\Repositories;
 
-use App\User\UserModel;
+use App\Models\UserModel;
 use InvalidArgumentException;
-use App\Database\ConnectDatabase;
+use App\Db\ConnectDatabase;
 use PDO;
 
 class UserRepository

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Agency;
+namespace App\Models;
 
 use JsonSerializable;
 

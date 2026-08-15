@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Agency;
+namespace App\Repositories;
 
-use App\Agency\AgencyModel;
-use App\Database\ConnectDatabase;
+use App\Models\AgencyModel;
+use App\Db\ConnectDatabase;
 use PDO;
 
 class AgencyRepository

@@ -1,65 +1,52 @@
 <?php
 
 
-$routes = require __DIR__ . '/routes.php';
+use FastRoute\Dispatcher;
 
-$method = $_SERVER['REQUEST_METHOD'];
-$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$dispatcher = FastRoute\simpleDispatcher(require __DIR__ . '/routes.php');
 
+$httpMethod = $_SERVER['REQUEST_METHOD'];
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-foreach ($routes as $route) {
+$routeInfo = $dispatcher->dispatch($httpMethod, $uri);
 
+switch ($routeInfo[0]) {
+    case Dispatcher::NOT_FOUND:
+        http_response_code(404);
+        echo 'Route introuvable';
+        break;
 
+    case Dispatcher::METHOD_NOT_ALLOWED:
+        http_response_code(405);
+        echo 'Méthode non autorisée';
+        break;
 
-    if ($route['method'] === $method && $route['path'] === $path) {
+    case Dispatcher::FOUND:
+        [$class, $action] = $routeInfo[1];
 
-        $file = dirname(__DIR__, 2) . "/src/controllers/{$route['controller']}.php";
-
-        require_once $file;
-        $class = $route['namespace'] . $route['controller'];
-        $action = $route['action'];
-
+        $controller = method_exists($class, 'create') ? $class::create() : new $class();
 
         switch (true) {
             case str_contains($action, 'getAll'):
-
-                $controller = $class::create();
                 $controller->$action();
                 break;
+
             case str_contains($action, 'ById'):
             case str_contains($action, 'logoutCont'):
-
-                $id = $_POST['id'];
-
-                $controller = $class::create();
-                $controller->$action($id);
+                $controller->$action($_POST['id']);
                 break;
+
             case str_contains($action, 'ByEmail'):
-
-                $id = $_POST['id'];
-                $email = $_POST['email'];
-
-                $controller = $class::create();
-                $controller->$action($id, $email);
+                $controller->$action($_POST['id'], $_POST['email']);
                 break;
+
             case str_contains($action, 'loginController'):
-
-                $email = $_POST['email'];
-                $password = $_POST['mdp'];
-
-                $controller = $class::create();
-                $controller->$action($email, $password);
+                $controller->$action($_POST['email'], $_POST['mdp']);
                 break;
+
             default:
-                $controller = new $class();
                 $controller->$action();
                 break;
         }
-
-
-        exit;
-    }
+        break;
 }
-
-http_response_code(404);
-echo 'Route introuvable';

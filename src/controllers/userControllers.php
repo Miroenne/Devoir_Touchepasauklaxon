@@ -1,11 +1,12 @@
 <?php
 
-namespace App\User;
+namespace App\Controllers;
 
-use App\User\UserServices;
-use App\Exception\InvalidCredentialsException;
-use App\Exception\DomainException;
-use App\Exception\Serialized;
+use App\Services\UserServices;
+use App\Repositories\UserRepository;
+use App\Utils\InvalidCredentialsException;
+use App\Utils\DomainException;
+use App\Utils\ExceptionSerialize;
 
 use JsonSerializable;
 
@@ -13,11 +14,11 @@ use JsonSerializable;
 class UserControllers
 {
 
-    public function __construct(private UserServices $services, private Serialized $serialize) {}
+    public function __construct(private UserServices $services, private ExceptionSerialize $serialize) {}
 
     public static function create(): self
     {
-        return new self(new UserServices(new UserRepository()), new Serialized());
+        return new self(new UserServices(new UserRepository()), new ExceptionSerialize());
     }
 
 

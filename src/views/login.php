@@ -1,15 +1,14 @@
 <?php
 session_start();
-require __DIR__ . '/../../autoloader.php';
 
-use App\Exception\Serialized;
-use App\User\UserControllers;
-use App\User\UserRepository;
-use App\User\UserServices;
+use App\Utils\ExceptionSerialize;
+use App\Controllers\UserControllers;
+use App\Repositories\UserRepository;
+use App\Services\UserServices;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $userController = new UserControllers(new UserServices(new UserRepository()), new Serialized());
+    $userController = new UserControllers(new UserServices(new UserRepository()), new ExceptionSerialize());
 
     $login = $userController->loginController($_POST['email'], $_POST['mdp']);
 

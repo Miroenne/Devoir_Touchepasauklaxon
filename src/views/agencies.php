@@ -1,12 +1,12 @@
 <?php
 session_start();
 
-use App\Exception\Serialized;
-use App\Agency\AgencyControllers;
-use App\Agency\AgencyServices;
-use App\Agency\AgencyRepository;
+use App\Utils\ExceptionSerialize;
+use App\Controllers\AgencyControllers;
+use App\Services\AgencyServices;
+use App\Repositories\AgencyRepository;
 
-$agencyController = new AgencyControllers(new AgencyServices(new AgencyRepository), new Serialized());
+$agencyController = new AgencyControllers(new AgencyServices(new AgencyRepository), new ExceptionSerialize());
 
 /*$newAgency = $agencyController->updateAgencyController(9, 'Cannes');
 var_dump($newAgency);

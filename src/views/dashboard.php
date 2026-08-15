@@ -1,18 +1,16 @@
 <?php
 session_start();
 
-require dirname(__DIR__) . '/controllers/userControllers.php';
+use App\Utils\ExceptionSerialize;
 
-use App\Exception\Serialized;
-
-use App\User\UserRepository;
-use App\User\UserServices;
-use App\User\UserControllers;
-use App\Agency\AgencyRepository;
-use App\Agency\AgencyServices;
+use App\Repositories\UserRepository;
+use App\Services\UserServices;
+use App\Controllers\UserControllers;
+use App\Repositories\AgencyRepository;
+use App\Services\AgencyServices;
 
 
-$userController = new UserControllers(new UserServices(new UserRepository), new Serialized());
+$userController = new UserControllers(new UserServices(new UserRepository), new ExceptionSerialize());
 
 $token = $_COOKIE['csrf-token'] ?? null;
 

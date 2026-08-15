@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Trip;
+namespace App\Models;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
